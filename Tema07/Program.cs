@@ -10,6 +10,9 @@ namespace Tema07
     {
         static void Main(string[] args)
         {
+
+
+
         }
     }
 }
