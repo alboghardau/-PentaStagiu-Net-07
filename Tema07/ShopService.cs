@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace Tema07
 {
+    enum Comp { Higher, Lower, Equal }
+
     class ShopService
     {
         List<Product> ProductsList;
+        private List<Product> TempList;
 
         public ShopService()
         {
             this.ProductsList = new List<Product>();
+            this.TempList = new List<Product>();
         }
 
         public List<Product> GetProducts()
@@ -33,10 +37,43 @@ namespace Tema07
            });
         }
 
+        //FILTER LIST BUILDER
+        public void FilterBuilder()
+        {
+            this.TempList.Clear();
+            this.TempList.AddRange(this.ProductsList);
+        }
+
+        public void ByType(ProductType type)
+        {
+            this.TempList = this.TempList.Where( x => x.ProductType.Equals(type)).ToList();
+        }
+
+        public void ByFirstNameLetter(char c)
+        {
+
+        }
+
+        public void ByPrice(Comp comp,double value)
+        {
+            switch (comp)
+            {
+
+            }
+        }
+
+ 
+        public List<Product> GetFilteredList(){
+            return this.TempList;
+        }
+
         public List<Product> GetProductsByTypeAndHigherPrice(ProductType type, double price)
         {
             return this.ProductsList.Where(x => x.ProductType.Equals(type)).Where( x => x.Price > price).ToList();
         }
+
+
+        
 
     }
 }
