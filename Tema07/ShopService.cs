@@ -11,12 +11,10 @@ namespace Tema07
     class ShopService
     {
         List<Product> ProductsList;
-        private List<Product> TempList;
 
         public ShopService()
         {
             this.ProductsList = new List<Product>();
-            this.TempList = new List<Product>();
         }
 
         public List<Product> GetProducts()
@@ -37,43 +35,54 @@ namespace Tema07
            });
         }
 
+        public Builder FilterBuilder()
+        {
+            return new Builder(this.ProductsList);
+        }
+
         //FILTER LIST BUILDER
-        public void FilterBuilder()
-        {
-            this.TempList.Clear();
-            this.TempList.AddRange(this.ProductsList);
-        }
+        public class Builder{
 
-        public void ByType(ProductType type)
-        {
-            this.TempList = this.TempList.Where( x => x.ProductType.Equals(type)).ToList();
-        }
-
-        public void ByFirstNameLetter(char c)
-        {
-
-        }
-
-        public void ByPrice(Comp comp,double value)
-        {
-            switch (comp)
+            private List<Product> TempList;
+            
+            public Builder(List<Product> list)
             {
+                this.TempList = list;
+            }
 
+            public Builder ByType(ProductType type)
+            {
+                this.TempList = this.TempList.Where(x => x.ProductType.Equals(type)).ToList();
+                return this;
+            }
+
+            public Builder StartsWith(string str)
+            {
+                this.TempList = this.TempList.Where(x => x.ProductName.StartsWith(str)).ToList();
+                return this;
+            }
+
+            public Builder ByPrice(Comp comp, double value)
+            {
+                switch (comp)
+                {
+                    case Comp.Equal:
+                        this.TempList = this.TempList.Where(x => (x.Price == value)).ToList();
+                        break;
+                    case Comp.Higher:
+                        this.TempList = this.TempList.Where(x => (x.Price > value)).ToList();
+                        break;
+                    case Comp.Lower:
+                        this.TempList = this.TempList.Where(x => (x.Price < value)).ToList();
+                        break;
+                }
+                return this;
+            }
+
+            public List<Product> GetFilteredList()
+            {
+                return this.TempList;
             }
         }
-
- 
-        public List<Product> GetFilteredList(){
-            return this.TempList;
-        }
-
-        public List<Product> GetProductsByTypeAndHigherPrice(ProductType type, double price)
-        {
-            return this.ProductsList.Where(x => x.ProductType.Equals(type)).Where( x => x.Price > price).ToList();
-        }
-
-
-        
-
     }
 }

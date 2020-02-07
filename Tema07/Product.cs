@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 namespace Tema07
 {
     enum ProductType { Book, Food, Clothes }
+    enum ProductAtribute { Type, Name, Price}
 
     class Product
     {        
         public ProductType ProductType { get; set; }
-        string ProductName { get; set; }
+        public string ProductName { get; set; }
         public double Price { get; set; }
 
         public Product(string productName, double price, ProductType type)
